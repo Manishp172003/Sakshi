@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sakshi Birthday Journey 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  overflow:hidden;
+  height:100vh;
+  width:100vw;
+  font-family:'Poppins',sans-serif;
+  background:#1a0a2e;
+}
+
+/* ── PAGE SYSTEM ── */
+.page{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:2rem;
+  opacity:0;
+  pointer-events:none;
+  transform:scale(0.94) translateY(30px);
+  transition:opacity 0.7s ease, transform 0.7s cubic-bezier(.34,1.3,.64,1);
+}
+.page.active{
+  opacity:1;
+  pointer-events:auto;
+  transform:scale(1) translateY(0);
+}
+.page.exit{
+  opacity:0;
+  transform:scale(1.06) translateY(-30px);
+  transition:opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* ── INDIVIDUAL PAGE BACKGROUNDS ── */
+#p1{ background:radial-gradient(ellipse at 60% 40%, #2d0a4e 0%, #1a0a2e 70%);}
+#p2{ background:radial-gradient(ellipse at 40% 50%, #4a0a30 0%, #1a0a2e 70%);}
+#p3{ background:radial-gradient(ellipse at 60% 60%, #0a2e1a 0%, #0a1a2e 70%);}
+#p4{ background:radial-gradient(ellipse at 40% 40%, #2e1a0a 0%, #1a0a2e 70%);}
+#p5{ background:radial-gradient(ellipse at 60% 40%, #1a0a3e 0%, #0a1a2e 70%);}
+#p6{ background:radial-gradient(ellipse at 50% 50%, #3b0a6e 0%, #1a0a2e 70%);}
+
+/* ── STARS ── */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;background:white;animation:twinkle linear infinite;}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
+
+/* ── CARD ── */
+.card{
+  position:relative;
+  z-index:2;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:28px;
+  padding:2.5rem 2rem;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 24px 60px rgba(0,0,0,0.4);
+}
+
+/* ── TYPOGRAPHY ── */
+.sac{font-family:'Sacramento',cursive;}
+
+h1{
+  font-size:1.8rem;
+  font-weight:700;
+  margin-bottom:.6rem;
+  line-height:1.2;
+}
+h2{font-size:1.1rem;font-weight:400;}
+p{
+  font-size:.95rem;
+  line-height:1.8;
+  max-width:300px;
+  margin:.6rem auto;
+  color:rgba(255,255,255,0.78);
+  font-weight:300;
+}
+
+/* Page-specific title colors */
+#p1 h1{background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#p2 h1{background:linear-gradient(135deg,#f472b6,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#p3 h1{background:linear-gradient(135deg,#34d399,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#p4 h1{background:linear-gradient(135deg,#fbbf24,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#p5 h1{background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#p6 h1{background:linear-gradient(135deg,#f59e0b,#f472b6,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 2.5s linear infinite;}
+
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+
+/* ── DIVIDER ── */
+.divider{
+  width:60px;height:3px;border-radius:2px;
+  margin:.8rem auto;
+}
+#p1 .divider{background:linear-gradient(90deg,#a78bfa,#f472b6);}
+#p2 .divider{background:linear-gradient(90deg,#f472b6,#fb923c);}
+#p3 .divider{background:linear-gradient(90deg,#34d399,#60a5fa);}
+#p4 .divider{background:linear-gradient(90deg,#fbbf24,#f472b6);}
+#p5 .divider{background:linear-gradient(90deg,#818cf8,#c084fc);}
+#p6 .divider{background:linear-gradient(90deg,#f59e0b,#f472b6);}
+
+/* ── PHOTO ── */
+.photo-ring{
+  width:150px;height:150px;border-radius:50%;
+  margin:1rem auto .8rem;
+  padding:4px;
+  background:conic-gradient(#f472b6,#a78bfa,#60a5fa,#34d399,#f59e0b,#f472b6);
+  animation:spin 5s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.photo-inner{
+  width:100%;height:100%;border-radius:50%;
+  overflow:hidden;
+  border:3px solid #1a0a2e;
+}
+.photo-inner img{width:100%;height:100%;object-fit:cover;}
+
+/* ── ICON CIRCLE ── */
+.icon-circle{
+  width:80px;height:80px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;margin:.6rem auto;
+  animation:iconPulse 2s ease-in-out infinite;
+}
+@keyframes iconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+#p3 .icon-circle{background:rgba(52,211,153,.18);}
+#p4 .icon-circle{background:rgba(251,191,36,.18);}
+#p5 .icon-circle{background:rgba(192,132,252,.18);}
+
+/* ── TRAIT CHIPS ── */
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:.8rem 0;}
+.chip{
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  color:white;
+  animation:chipPop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.chip:nth-child(1){animation-delay:.1s}.chip:nth-child(2){animation-delay:.2s}
+.chip:nth-child(3){animation-delay:.3s}.chip:nth-child(4){animation-delay:.4s}
+@keyframes chipPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── BUTTON ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 32px;
+  border:none;border-radius:50px;
+  font-family:'Poppins',sans-serif;
+  font-size:15px;font-weight:600;
+  cursor:pointer;
+  margin-top:1.1rem;
+  transition:transform .2s, box-shadow .2s;
+  letter-spacing:.3px;
+}
+.btn:hover{transform:translateY(-3px);}
+.btn:active{transform:scale(.96);}
+#p1 .btn{background:linear-gradient(135deg,#a78bfa,#f472b6);color:white;box-shadow:0 6px 22px rgba(167,139,250,.5);}
+#p1 .btn:hover{box-shadow:0 10px 28px rgba(167,139,250,.65);}
+#p2 .btn{background:linear-gradient(135deg,#f472b6,#fb923c);color:white;box-shadow:0 6px 22px rgba(244,114,182,.5);}
+#p3 .btn{background:linear-gradient(135deg,#34d399,#60a5fa);color:white;box-shadow:0 6px 22px rgba(52,211,153,.45);}
+#p4 .btn{background:linear-gradient(135deg,#fbbf24,#f472b6);color:white;box-shadow:0 6px 22px rgba(251,191,36,.45);}
+#p5 .btn{background:linear-gradient(135deg,#818cf8,#c084fc);color:white;box-shadow:0 6px 22px rgba(129,140,248,.5);}
+
+/* ── PAGE COUNTER ── */
+#counter{
+  position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;z-index:99;
+}
+.dot{
+  width:8px;height:8px;border-radius:4px;
+  background:rgba(255,255,255,.25);
+  transition:all .4s ease;cursor:pointer;
+}
+.dot.on{background:#f472b6;width:24px;}
+
+/* ── FLOATING HEARTS ── */
+.heart{
+  position:fixed;pointer-events:none;z-index:1;
+  font-size:1.2rem;
+  animation:floatHeart linear forwards;
+}
+@keyframes floatHeart{
+  0%  {transform:translateY(0) scale(1) rotate(0deg);opacity:.9}
+  100%{transform:translateY(-100vh) scale(0.5) rotate(30deg);opacity:0}
+}
+
+/* ── CONFETTI ── */
+.cf{
+  position:fixed;pointer-events:none;z-index:3;
+  opacity:0;
+  animation:cfFall linear forwards;
+}
+@keyframes cfFall{
+  0%  {opacity:1;transform:translateY(-10px) rotate(0)}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg)}
+}
+
+/* ── PAGE 1 SPECIAL: pulsing ring ── */
+.pulse-ring{
+  width:90px;height:90px;border-radius:50%;
+  background:rgba(167,139,250,.15);
+  border:2px solid rgba(167,139,250,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.8rem;
+  margin:.6rem auto;
+  animation:pulseRing 2s ease-in-out infinite;
+}
+@keyframes pulseRing{
+  0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,.4),0 0 0 0 rgba(167,139,250,.2)}
+  50%{box-shadow:0 0 0 12px rgba(167,139,250,.15),0 0 0 24px rgba(167,139,250,.05)}
+}
+
+/* ── PAGE 6 SPECIAL ── */
+.big-cake{font-size:4rem;animation:cakeBounce 1s ease-in-out infinite alternate;display:block;margin:.5rem auto;}
+@keyframes cakeBounce{from{transform:scale(1)}to{transform:scale(1.12)}}
+
+.signature{
+  font-family:'Sacramento',cursive;
+  font-size:1.9rem;
+  background:linear-gradient(135deg,#f59e0b,#f472b6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-top:.8rem;
+}
+
+/* ── LETTER STYLE for p5 ── */
+.letter{
+  background:rgba(255,255,255,.06);
+  border-left:3px solid #c084fc;
+  border-radius:0 12px 12px 0;
+  padding:14px 16px;
+  text-align:left;
+  margin:.8rem 0;
+}
+.letter p{margin:0;font-size:.88rem;color:rgba(255,255,255,.8);}
+.letter p+p{margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<div id="counter"></div>
+
+<!-- PAGE 1 — Opening -->
+<div class="page active" id="p1">
+  <div class="card">
+    <div class="pulse-ring">👀</div>
+    <h1>Hey Sakshi!</h1>
+    <div class="divider"></div>
+    <p>Psst… I made something special<br>just for you today 🎁</p>
+    <button class="btn" onclick="go(1,2)">Open it 💖</button>
+  </div>
+</div>
+
+<!-- PAGE 2 — Birthday + Photo -->
+<div class="page" id="p2">
+  <div class="card">
+    <h1>Happy 23rd Birthday 🎂</h1>
+    <div class="divider"></div>
+    <div class="photo-ring">
+      <div class="photo-inner">
+        <img src="WhatsApp Image 2026-04-09 at 4.28.09 AM.jpeg" alt="Sakshi">
+      </div>
+    </div>
+    <p class="sac" style="font-size:1.6rem;color:rgba(255,255,255,.9);">Happy birthday Maggii ✨</p>
+    <button class="btn" onclick="go(2,3)">Next ➡️</button>
+  </div>
+</div>
+
+<!-- PAGE 3 — You are Special -->
+<div class="page" id="p3">
+  <div class="card">
+    <div class="icon-circle">✨</div>
+    <h1>You are Special</h1>
+    <div class="divider"></div>
+    <p>You are one of the sweetest and kindest people I've ever known — someone who makes the world genuinely better 💖</p>
+    <div class="chips">
+      <span class="chip">🌸 Sweet</span>
+      <span class="chip">💛 Kind</span>
+      <span class="chip">🤝 Helpful</span>
+      <span class="chip">😄 Joyful</span>
+    </div>
+    <button class="btn" onclick="go(3,4)">Next ➡️</button>
+  </div>
+</div>
+
+<!-- PAGE 4 — College Friend -->
+<div class="page" id="p4">
+  <div class="card">
+    <div class="icon-circle">🎓</div>
+    <h1>My College Friend</h1>
+    <div class="divider"></div>
+    <p>From late-night study chaos to canteen conversations — you made every single college moment better just by being there 😊🍕</p>
+    <p style="font-size:.82rem;color:rgba(255,255,255,.5);font-style:italic;">These memories are forever 📸</p>
+    <button class="btn" onclick="go(4,5)">Next ➡️</button>
+  </div>
+</div>
+
+<!-- PAGE 5 — Like a Sister -->
+<div class="page" id="p5">
+  <div class="card">
+    <div class="icon-circle">💜</div>
+    <h1>Like a Sister 💕</h1>
+    <div class="divider"></div>
+    <div class="letter">
+      <p>Not everyone is lucky enough to find a friend who feels like family…</p>
+      <p>You always showed up, listened without judging, and helped without being asked. That's rare. That's you. 🤍</p>
+    </div>
+    <button class="btn" onclick="go(5,6)">Next ➡️</button>
+  </div>
+</div>
+
+<!-- PAGE 6 — Grand Finale -->
+<div class="page" id="p6">
+  <div class="card">
+    <span class="big-cake">🎂</span>
+    <h1 style="font-size:2rem;">I Wish You 🎉</h1>
+    <div class="divider"></div>
+    <p>Stay happy always, Sakshi 💖✨<br>Keep smiling forever 😊<br>May 23 be your most beautiful year yet 🌸</p>
+    <p class="signature">From Manish 💌</p>
+  </div>
+</div>
+
+<audio id="music" src="nastelbom-happy-birthday-471481.mp3" loop></audio>
+
+<script>
+/* ── Stars ── */
+const starsEl = document.getElementById('stars');
+for(let i=0;i<90;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.5+.4;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*4}s;`;
+  starsEl.appendChild(s);
+}
+
+/* ── Dots ── */
+const TOTAL=6;
+const counterEl=document.getElementById('counter');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>go(curPage,i+1);
+  counterEl.appendChild(d);
+}
+
+let curPage=1;
+function updateDots(n){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.className='dot'+(i===n-1?' on':''));
+}
+
+function go(from,to){
+  if(to<1||to>TOTAL||to===from) return;
+  const fromEl=document.getElementById('p'+from);
+  const toEl  =document.getElementById('p'+to);
+  fromEl.classList.add('exit');
+  setTimeout(()=>{fromEl.classList.remove('active','exit');},500);
+  setTimeout(()=>{toEl.classList.add('active');},300);
+  curPage=to;
+  updateDots(to);
+  document.getElementById('music').play().catch(()=>{});
+  if(to===6) launchConfetti();
+}
+
+/* ── Confetti ── */
+const cfColors=['#f472b6','#a78bfa','#f59e0b','#34d399','#60a5fa','#fb923c','#ec4899'];
+function launchConfetti(){
+  for(let i=0;i<100;i++){
+    const el=document.createElement('div');
+    el.className='cf';
+    const w=5+Math.random()*9, h=w*(Math.random()<.5?.4:1);
+    el.style.cssText=`left:${Math.random()*100}%;top:-15px;width:${w}px;height:${h}px;background:${cfColors[Math.floor(Math.random()*cfColors.length)]};border-radius:${Math.random()<.3?'50%':'3px'};animation-duration:${2.5+Math.random()*3.5}s;animation-delay:${Math.random()*1.5}s;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),6000);
+  }
+}
+
+/* ── Floating hearts ── */
+const heartEmojis=['❤️','🌸','💖','✨','💜','🩷'];
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.textContent=heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.bottom='-30px';
+  h.style.animationDuration=(4+Math.random()*4)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},600);
+
+/* ── Keyboard nav ── */
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'&&curPage<TOTAL) go(curPage,curPage+1);
+  if(e.key==='ArrowLeft'&&curPage>1) go(curPage,curPage-1);
+});
+</script>
+</body>
+</html>
